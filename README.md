@@ -1,26 +1,36 @@
-# CyberCare AI — Gemini Free Tier
+CyberCare AI — AI Resume & Cover Letter Builder
 
-AI-powered cybersecurity resume and cover-letter builder using Google's Gemini API.
+AI-powered resume and cover-letter builder using OpenRouter API.
 
-## Setup
+Setup
 
 1. Install Node.js 18+.
-2. Create a Gemini API key in Google AI Studio.
+
+2. Create an OpenRouter API key.
+
 3. Copy `.env.example` to `.env`.
-4. Put your key in `.env`:
 
-   GEMINI_API_KEY=your_key_here
+4. Add your OpenRouter API key to `.env`:
 
-5. Optional: change `GEMINI_MODEL` if needed.
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+
+5. Optional: change the model in `.env`:
+
+OPENROUTER_MODEL=openrouter/free
+
 6. Open Command Prompt in this folder and run:
 
-   npm install
-   npm start
+npm install
+npm start
 
-7. Open http://localhost:3000
+7. Open:
 
-## Important
+http://localhost:3000
 
-- Never paste your API key into the frontend or share it publicly.
-- The Gemini free tier has usage/rate limits. It is suitable for testing and small usage, not unlimited customer traffic.
-- If the selected model is unavailable on your free tier, set `GEMINI_MODEL` in `.env` to another model currently available to your Gemini API project.
+Important
+
+Never paste your API key into the frontend or share it publicly.
+
+Keep your `.env` file private. It is excluded from Git using `.gitignore`.
+
+The application uses a server-side API request so the API key remains protected.
