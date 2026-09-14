@@ -1,0 +1,3745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>CyberCare AI Resume Builder</title>
+
+<style>
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  background:#0b1020;
+  color:#eef2ff;
+}
+
+button,
+input,
+textarea,
+select{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+.app{
+  display:flex;
+  min-height:100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.side{
+  width:245px;
+  background:#0f162b;
+  border-right:1px solid #25304b;
+  padding:24px 16px;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:10;
+}
+
+.brand{
+  font-weight:800;
+  font-size:20px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-bottom:34px;
+}
+
+.logo{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#36d399,#5b8cff);
+  display:grid;
+  place-items:center;
+  color:#07101d;
+}
+
+.nav button{
+  display:block;
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#9ba8c5;
+  text-align:left;
+  padding:13px 14px;
+  border-radius:10px;
+  margin:5px 0;
+}
+
+.nav button.active,
+.nav button:hover{
+  background:#1b2742;
+  color:#fff;
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  margin-left:245px;
+  width:calc(100% - 245px);
+  padding:32px 40px;
+}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:28px;
+}
+
+.eyebrow{
+  color:#6ee7b7;
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.top h1{
+  margin:5px 0;
+  font-size:31px;
+}
+
+.badge{
+  padding:8px 12px;
+  border:1px solid #30405f;
+  border-radius:20px;
+  color:#aeb9d3;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:22px;
+}
+
+.card{
+  background:#111a30;
+  border:1px solid #263452;
+  border-radius:16px;
+  padding:22px;
+  box-shadow:0 10px 30px #0002;
+}
+
+.card h2{
+  font-size:18px;
+  margin:0 0 18px;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  color:#aeb9d3;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.field input,
+.field textarea,
+.field select{
+  width:100%;
+  background:#0b1223;
+  border:1px solid #2b3a5b;
+  color:#fff;
+  border-radius:10px;
+  padding:12px;
+  outline:none;
+  transition:.2s;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:#5b8cff;
+  box-shadow:0 0 0 3px #5b8cff18;
+}
+
+.field textarea{
+  min-height:115px;
+  resize:vertical;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.row.three{
+  grid-template-columns:1fr 1fr 1fr;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary{
+  border:0;
+  background:linear-gradient(90deg,#34d399,#4f8cff);
+  color:#06101c;
+  font-weight:800;
+  padding:13px 18px;
+  border-radius:10px;
+  width:100%;
+}
+
+.primary:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.secondary{
+  background:#1a2641;
+  color:#fff;
+  border:1px solid #30415f;
+  padding:11px 14px;
+  border-radius:9px;
+}
+
+.secondary:hover{
+  background:#243352;
+  border-color:#5b8cff;
+}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+
+/* =========================================================
+   JOB MATCH
+========================================================= */
+
+.score{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.circle{
+  width:92px;
+  height:92px;
+  border-radius:50%;
+  border:9px solid #34d399;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+  font-weight:800;
+}
+
+.checks{
+  display:grid;
+  gap:10px;
+  margin-top:18px;
+}
+
+.check{
+  padding:11px 12px;
+  background:#0c1427;
+  border-radius:9px;
+  color:#b8c4db;
+}
+
+.check b{
+  color:#6ee7b7;
+}
+
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+
+.output{
+  margin-top:22px;
+  display:none;
+}
+
+.output pre{
+  white-space:pre-wrap;
+  background:#0b1223;
+  border:1px solid #293a5c;
+  border-radius:10px;
+  padding:18px;
+  color:#dce6fa;
+  line-height:1.6;
+}
+
+.hint{
+  font-size:12px;
+  color:#8290ad;
+  margin-top:10px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+
+/* =========================================================
+   CV BASE
+========================================================= */
+
+.cv-paper{
+  background:#fff;
+  color:#1f2937;
+  border-radius:10px;
+  padding:38px 44px;
+  max-width:850px;
+  margin:18px auto 0;
+  box-shadow:0 8px 30px #0003;
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+.cv-header{
+  text-align:center;
+  border-bottom:2px solid #1f2937;
+  padding-bottom:16px;
+}
+
+.cv-name{
+  font-size:30px;
+  font-weight:800;
+  letter-spacing:1px;
+  word-break:break-word;
+}
+
+.cv-contact{
+  font-size:12px;
+  color:#4b5563;
+  margin-top:7px;
+  line-height:1.7;
+  word-break:break-word;
+}
+
+.cv-contact a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.cv-section{
+  margin-top:19px;
+}
+
+.cv-section h3{
+  font-size:13px;
+  letter-spacing:1.4px;
+  margin:0 0 8px;
+  padding-bottom:5px;
+  border-bottom:1px solid #d1d5db;
+  color:#111827;
+}
+
+.cv-section p{
+  margin:0;
+  font-size:12.5px;
+  line-height:1.55;
+}
+
+.cv-section ul{
+  margin:5px 0 0 18px;
+  padding:0;
+}
+
+.cv-section li{
+  font-size:12.5px;
+  line-height:1.55;
+  margin-bottom:5px;
+}
+
+.cv-skills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.cv-skill{
+  font-size:11.5px;
+  border:1px solid #cbd5e1;
+  border-radius:5px;
+  padding:5px 8px;
+  background:#f8fafc;
+  color:#1f2937;
+}
+
+
+/* =========================================================
+   TEMPLATE SELECTOR
+========================================================= */
+
+.template-panel{
+  margin-top:22px;
+  margin-bottom:20px;
+}
+
+.template-panel h2{
+  margin-bottom:14px;
+}
+
+.template-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+
+.template-card{
+  background:#0b1223;
+  border:1px solid #2b3a5b;
+  border-radius:12px;
+  padding:14px;
+  cursor:pointer;
+  transition:.2s ease;
+  text-align:left;
+}
+
+.template-card:hover{
+  border-color:#5b8cff;
+  transform:translateY(-2px);
+}
+
+.template-card.active{
+  border:2px solid #34d399;
+  background:#101c31;
+}
+
+.template-preview{
+  height:100px;
+  border-radius:7px;
+  background:white;
+  margin-bottom:10px;
+  padding:10px;
+  overflow:hidden;
+}
+
+.template-preview .line{
+  height:5px;
+  background:#d1d5db;
+  margin:5px 0;
+  border-radius:3px;
+}
+
+.template-preview .title{
+  height:9px;
+  width:60%;
+  background:#111827;
+  margin-bottom:8px;
+  border-radius:3px;
+}
+
+.template-card strong{
+  display:block;
+  color:#fff;
+  font-size:13px;
+}
+
+.template-card span{
+  display:block;
+  color:#8290ad;
+  font-size:11px;
+  margin-top:4px;
+}
+
+
+/* =========================================================
+   CLASSIC
+========================================================= */
+
+.cv-paper.template-classic{
+  font-family:Arial,Helvetica,sans-serif;
+}
+
+
+/* =========================================================
+   MODERN
+========================================================= */
+
+.cv-paper.template-modern{
+  font-family:Inter,Arial,sans-serif;
+  border-top:8px solid #2563eb;
+  padding:42px 48px;
+}
+
+.template-modern .cv-header{
+  text-align:left;
+  border-bottom:0;
+}
+
+.template-modern .cv-name{
+  color:#1d4ed8;
+  font-size:34px;
+}
+
+.template-modern .cv-section h3{
+  color:#2563eb;
+  border-bottom:2px solid #dbeafe;
+}
+
+
+/* =========================================================
+   CYBERSECURITY
+========================================================= */
+
+.cv-paper.template-cyber{
+  font-family:Inter,Arial,sans-serif;
+  background:#f8fafc;
+  border-left:8px solid #16a34a;
+}
+
+.template-cyber .cv-header{
+  text-align:left;
+  border-bottom:2px solid #16a34a;
+}
+
+.template-cyber .cv-name{
+  color:#111827;
+  letter-spacing:2px;
+}
+
+.template-cyber .cv-section h3{
+  color:#15803d;
+  border-bottom:1px solid #bbf7d0;
+}
+
+.template-cyber .cv-skill{
+  background:#ecfdf5;
+  border-color:#86efac;
+}
+
+
+/* =========================================================
+   EXECUTIVE
+========================================================= */
+
+.cv-paper.template-executive{
+  font-family:Georgia,"Times New Roman",serif;
+  padding:48px 55px;
+}
+
+.template-executive .cv-header{
+  text-align:left;
+  border-bottom:3px solid #111827;
+}
+
+.template-executive .cv-name{
+  font-family:Georgia,serif;
+  font-size:35px;
+  letter-spacing:0;
+}
+
+.template-executive .cv-section h3{
+  font-family:Arial,sans-serif;
+  color:#111827;
+  letter-spacing:2px;
+  border-bottom:1px solid #9ca3af;
+}
+
+
+/* =========================================================
+   MINIMAL
+========================================================= */
+
+.cv-paper.template-minimal{
+  font-family:Arial,Helvetica,sans-serif;
+  padding:34px 40px;
+}
+
+.template-minimal .cv-header{
+  border-bottom:1px solid #d1d5db;
+  text-align:left;
+}
+
+.template-minimal .cv-name{
+  font-size:28px;
+  font-weight:700;
+}
+
+.template-minimal .cv-section{
+  margin-top:15px;
+}
+
+.template-minimal .cv-section h3{
+  border:0;
+  padding:0;
+  margin-bottom:5px;
+  font-size:12px;
+  color:#374151;
+}
+
+
+/* =========================================================
+   CREATIVE PORTFOLIO
+========================================================= */
+
+.cv-paper.template-creative{
+  font-family:Inter,Arial,sans-serif;
+  padding:0;
+  overflow:hidden;
+  border-radius:8px;
+  background:#fff;
+}
+
+.template-creative .cv-header{
+  text-align:left;
+  border:0;
+  padding:38px 44px 30px;
+  background:#111827;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+
+.template-creative .cv-header:after{
+  content:"";
+  position:absolute;
+  right:-40px;
+  top:-70px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:#34d399;
+  opacity:.9;
+}
+
+.template-creative .cv-name{
+  color:#fff;
+  font-size:38px;
+  font-weight:900;
+  letter-spacing:-1px;
+  position:relative;
+  z-index:2;
+}
+
+.template-creative .cv-contact{
+  color:#cbd5e1;
+  position:relative;
+  z-index:2;
+  max-width:80%;
+}
+
+.template-creative .cv-contact a{
+  color:#6ee7b7;
+}
+
+.template-creative .cv-section{
+  margin:20px 44px;
+}
+
+.template-creative .cv-section h3{
+  color:#111827;
+  border:0;
+  border-left:4px solid #34d399;
+  padding:4px 0 4px 10px;
+  font-size:12px;
+  letter-spacing:1.8px;
+}
+
+.template-creative .cv-skills{
+  gap:8px;
+}
+
+.template-creative .cv-skill{
+  border:0;
+  background:#ecfdf5;
+  color:#047857;
+  border-radius:20px;
+  padding:6px 11px;
+  font-weight:600;
+}
+
+.template-creative .cv-section p,
+.template-creative .cv-section li{
+  font-size:12.5px;
+}
+
+
+/* =========================================================
+   TIMELINE PRO
+========================================================= */
+
+.cv-paper.template-timeline{
+  font-family:Inter,Arial,sans-serif;
+  padding:40px 46px;
+  background:#fff;
+}
+
+.template-timeline .cv-header{
+  text-align:left;
+  border-bottom:0;
+  padding-bottom:22px;
+  margin-bottom:10px;
+}
+
+.template-timeline .cv-name{
+  font-size:36px;
+  color:#172033;
+  letter-spacing:-1px;
+}
+
+.template-timeline .cv-contact{
+  margin-top:9px;
+}
+
+.template-timeline .cv-section{
+  margin-top:22px;
+  position:relative;
+  padding-left:28px;
+  border-left:2px solid #dbeafe;
+}
+
+.template-timeline .cv-section:before{
+  content:"";
+  position:absolute;
+  left:-7px;
+  top:0;
+  width:12px;
+  height:12px;
+  background:#2563eb;
+  border-radius:50%;
+  box-shadow:0 0 0 4px #dbeafe;
+}
+
+.template-timeline .cv-section h3{
+  border:0;
+  color:#1d4ed8;
+  font-size:12px;
+  letter-spacing:1.6px;
+  padding:0;
+}
+
+.template-timeline .cv-skills{
+  gap:6px;
+}
+
+.template-timeline .cv-skill{
+  border-radius:3px;
+  background:#eff6ff;
+  border-color:#bfdbfe;
+  color:#1e40af;
+}
+
+
+/* =========================================================
+   SIDEBAR CV TEMPLATE — TWO COLUMN PROFESSIONAL LAYOUT
+   Matches the reference layout: full-width header, narrow left
+   column for contact/education/skills, wider right column for
+   summary/experience/projects/certifications.
+========================================================= */
+
+/* Keep the original 7 templates as normal single-column CVs. */
+.cv-paper:not(.template-sidebar) .cv-sidebar{
+  display:none;
+}
+
+.cv-paper:not(.template-sidebar) .cv-main{
+  display:block;
+  padding:0;
+}
+
+.cv-paper:not(.template-sidebar) .cv-job-title{
+  display:none;
+}
+
+.cv-job-title{
+  display:none;
+}
+
+/* Main Sidebar layout */
+.cv-paper.template-sidebar{
+  font-family:Arial,Helvetica,sans-serif;
+  padding:0;
+  margin:18px auto 0;
+  background:#fff;
+  color:#4b4b4b;
+  display:grid;
+  grid-template-columns:minmax(185px,30%) minmax(0,70%);
+  grid-template-rows:auto 1fr;
+  width:100%;
+  max-width:850px;
+  min-height:100%;
+  overflow:hidden;
+  border-radius:0;
+  box-shadow:0 8px 30px #0002;
+}
+
+/* Header */
+.template-sidebar .cv-header{
+  grid-column:1 / -1;
+  grid-row:1;
+  text-align:center;
+  padding:28px 35px 25px;
+  margin:0;
+  background:#fff;
+  border-top:1px solid #8f8f8f;
+  border-bottom:1px solid #777;
+}
+
+.template-sidebar .cv-name{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:34px;
+  font-weight:500;
+  letter-spacing:7px;
+  line-height:1.15;
+  color:#555;
+  word-break:break-word;
+}
+
+.template-sidebar .cv-job-title{
+  display:block;
+  margin-top:8px;
+  font-size:14px;
+  line-height:1.4;
+  font-weight:400;
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  color:#666;
+}
+
+/* Hide the normal header contact row in Sidebar */
+.template-sidebar .cv-contact{
+  display:none;
+}
+
+/* Left column */
+.template-sidebar .cv-sidebar{
+  grid-column:1;
+  grid-row:2;
+  display:block;
+  min-width:0;
+  padding:24px 20px 30px;
+  background:#fff;
+  border-right:1px solid #777;
+}
+
+/* Right column */
+.template-sidebar .cv-main{
+  grid-column:2;
+  grid-row:2;
+  display:block;
+  min-width:0;
+  padding:24px 30px 32px;
+  background:#fff;
+}
+
+/* Section spacing */
+.template-sidebar .cv-section{
+  margin-top:25px;
+}
+
+.template-sidebar .cv-sidebar .cv-section:first-child,
+.template-sidebar .cv-main .cv-section:first-child{
+  margin-top:0;
+}
+
+/* Reference-style section headings */
+.template-sidebar .cv-section h3{
+  position:relative;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:3px;
+  color:#555;
+  border-bottom:1px solid #9a9a9a;
+  padding:0 0 9px;
+  margin:0 0 13px;
+  line-height:1.2;
+}
+
+/* Small grey circle behind the start of each heading */
+.template-sidebar .cv-section h3:before{
+  content:"";
+  position:absolute;
+  left:-5px;
+  top:-3px;
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:#e5e5e5;
+  z-index:0;
+}
+
+.template-sidebar .cv-section h3{
+  padding-left:9px;
+}
+
+/* Keep the heading text above the decorative circle. */
+.template-sidebar .cv-section h3{
+  isolation:isolate;
+  z-index:0;
+}
+
+.template-sidebar .cv-section h3:before{
+  z-index:-1;
+}
+
+/* Body typography */
+.template-sidebar .cv-section p,
+.template-sidebar .cv-section li,
+.template-sidebar .cv-entry,
+.template-sidebar .cv-contact-info{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11.5px;
+  line-height:1.6;
+  color:#555;
+}
+
+.template-sidebar .cv-section p{
+  margin:0;
+}
+
+.template-sidebar .cv-section ul{
+  margin:7px 0 0 18px;
+  padding:0;
+}
+
+.template-sidebar .cv-section li{
+  margin-bottom:7px;
+}
+
+/* Contact */
+.template-sidebar .cv-contact-info{
+  word-break:break-word;
+}
+
+.template-sidebar .cv-contact-info br{
+  line-height:2;
+}
+
+.template-sidebar .cv-sidebar .cv-contact-info a,
+.template-sidebar a{
+  color:#555;
+  text-decoration:none;
+}
+
+/* Education */
+.template-sidebar #cvEducation{
+  display:block;
+}
+
+.template-sidebar #cvEducation .cv-entry{
+  margin-bottom:13px;
+}
+
+/* Skills: 3 per row only in the Sidebar template */
+.template-sidebar .cv-skills{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px 8px;
+  width:100%;
+}
+
+.template-sidebar .cv-skill{
+  display:block;
+  min-width:0;
+  padding:4px 4px;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  color:#555;
+  font-size:10.5px;
+  line-height:1.35;
+  text-align:left;
+  overflow-wrap:anywhere;
+}
+
+/* Certifications */
+.template-sidebar #cvCerts .cv-entry{
+  margin-bottom:8px;
+}
+
+/* Make Sidebar fit smaller screens */
+@media(max-width:700px){
+  .cv-paper.template-sidebar{
+    display:block;
+    width:100%;
+    margin-top:12px;
+    box-shadow:none;
+  }
+
+  .template-sidebar .cv-header{
+    padding:24px 18px 20px;
+  }
+
+  .template-sidebar .cv-name{
+    font-size:27px;
+    letter-spacing:4px;
+  }
+
+  .template-sidebar .cv-job-title{
+    font-size:12px;
+    letter-spacing:1.5px;
+  }
+
+  .template-sidebar .cv-sidebar{
+    border-right:0;
+    border-bottom:1px solid #777;
+    padding:20px 18px 22px;
+  }
+
+  .template-sidebar .cv-main{
+    padding:22px 18px 28px;
+  }
+
+  .template-sidebar .cv-section{
+    margin-top:22px;
+  }
+
+  .template-sidebar .cv-skills{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+}
+
+/* =========================================================
+   MULTIPLE EDUCATION / CERTIFICATION ENTRIES
+========================================================= */
+
+.repeat-list{
+  display:grid;
+  gap:10px;
+}
+
+.repeat-item{
+  background:#0b1223;
+  border:1px solid #2b3a5b;
+  border-radius:10px;
+  padding:12px;
+}
+
+.repeat-item .field{
+  margin-bottom:10px;
+}
+
+.repeat-item .field:last-child{
+  margin-bottom:0;
+}
+
+.repeat-actions{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
+
+.add-entry{
+  background:#14213a;
+  color:#6ee7b7;
+  border:1px solid #30415f;
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.remove-entry{
+  background:#261827;
+  color:#fda4af;
+  border:1px solid #5a2c3b;
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:12px;
+}
+
+.add-entry:hover{
+  border-color:#6ee7b7;
+}
+
+.remove-entry:hover{
+  border-color:#fb7185;
+}
+
+.cv-entry-list{
+  display:grid;
+  gap:8px;
+}
+
+.cv-entry{
+  font-size:12.5px;
+  line-height:1.55;
+}
+
+.cv-entry strong{
+  font-weight:700;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+
+  .template-grid{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+}
+
+@media(max-width:900px){
+
+  .side{
+    position:static;
+    width:100%;
+    height:auto;
+  }
+
+  .app{
+    display:block;
+  }
+
+  .main{
+    margin:0;
+    width:100%;
+    padding:22px;
+  }
+
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .row.three{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .row{
+    grid-template-columns:1fr;
+  }
+
+  .template-grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .top{
+    align-items:flex-start;
+    gap:15px;
+    flex-direction:column;
+  }
+
+  .top h1{
+    font-size:25px;
+  }
+
+  .cv-paper{
+    padding:25px 20px;
+  }
+
+}
+
+
+/* =========================================================
+   PRINT / PDF
+========================================================= */
+
+@media print{
+
+  @page{
+    size:A4;
+    margin:10mm;
+  }
+
+  body{
+    background:#fff;
+    color:#111;
+  }
+
+  .app>.side,
+  .top,
+  .grid,
+  .output>.actions,
+  .output>h2,
+  .template-panel,
+  .hint,
+  #cover{
+    display:none!important;
+  }
+
+  .main{
+    margin:0;
+    width:100%;
+    padding:0;
+  }
+
+  .output{
+    display:block!important;
+    margin:0!important;
+    border:0!important;
+    box-shadow:none!important;
+    padding:0!important;
+    background:#fff!important;
+  }
+
+  .cv-paper{
+    display:flex!important;
+    flex-direction:column!important;
+    box-shadow:none!important;
+    border:0!important;
+    margin:0!important;
+    max-width:none!important;
+    width:100%!important;
+  }
+
+  .cv-header{
+    border-bottom:2px solid #111;
+  }
+
+  .cv-section h3{
+    color:#111!important;
+    border-bottom:1px solid #bbb;
+  }
+
+  .cv-paper,
+  .cv-paper *{
+    color:#111!important;
+  }
+
+  .cv-paper.template-sidebar{
+    display:grid!important;
+    grid-template-columns:30% 70%!important;
+    grid-template-rows:auto 1fr!important;
+    width:100%!important;
+    max-width:none!important;
+    box-shadow:none!important;
+  }
+
+  .template-sidebar .cv-header{
+    grid-column:1 / -1!important;
+    grid-row:1!important;
+  }
+
+  .template-sidebar .cv-sidebar{
+    display:block!important;
+    grid-column:1!important;
+    grid-row:2!important;
+    border-right:1px solid #777!important;
+  }
+
+  .template-sidebar .cv-main{
+    display:block!important;
+    grid-column:2!important;
+    grid-row:2!important;
+  }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+<!-- ========================================================
+     SIDEBAR
+========================================================= -->
+
+<aside class="side">
+
+  <div class="brand">
+
+    <div class="logo">
+      ✦
+    </div>
+
+    CyberCare AI
+
+  </div>
+
+
+  <div class="nav">
+
+    <button
+      class="active"
+      data-target="dashboard"
+      onclick="navigate('dashboard',this)">
+      ⌂ Dashboard
+    </button>
+
+
+    <button
+      data-target="resumes"
+      onclick="navigate('resumes',this)">
+      ▣ My Resumes
+    </button>
+
+
+    <button
+      data-target="coverletters"
+      onclick="navigate('coverletters',this)">
+      ✉ Cover Letters
+    </button>
+
+
+    <button
+      data-target="jobmatch"
+      onclick="navigate('jobmatch',this)">
+      ◉ Job Match
+    </button>
+
+
+    <button
+      data-target="analytics"
+      onclick="navigate('analytics',this)">
+      ◫ Analytics
+    </button>
+
+
+    <button
+      data-target="settings"
+      onclick="navigate('settings',this)">
+      ⚙ Settings
+    </button>
+
+  </div>
+
+</aside>
+
+
+
+<!-- ========================================================
+     MAIN
+========================================================= -->
+
+<main
+  class="main"
+  id="dashboard">
+
+
+  <div class="top">
+
+    <div>
+
+      <div class="eyebrow">
+        AI Career Assistant
+      </div>
+
+      <h1>
+        Resume & Cover Letter Builder
+      </h1>
+
+      <div style="color:#8e9bb6">
+        Turn cybersecurity skills into a job-ready application.
+      </div>
+
+    </div>
+
+
+    <div class="badge">
+      ATS Optimized
+    </div>
+
+  </div>
+
+
+
+  <!-- ======================================================
+       FORM + JOB MATCH
+  ======================================================= -->
+
+  <div class="grid">
+
+
+    <!-- RESUME FORM -->
+
+    <section class="card">
+
+      <h2>
+        Tell us about yourself & the role
+      </h2>
+
+
+      <div class="row">
+
+        <div class="field">
+
+          <label>
+            Full Name
+          </label>
+
+          <input
+            id="name"
+            placeholder="e.g. Dua Sheikh"
+            autocomplete="name">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Target Job Title
+          </label>
+
+          <input
+            id="job"
+            placeholder="e.g. SOC Analyst">
+
+        </div>
+
+      </div>
+
+
+
+      <div class="row">
+
+        <div class="field">
+
+          <label>
+            Experience Level
+          </label>
+
+          <select id="level">
+
+            <option>
+              Entry Level
+            </option>
+
+            <option>
+              Mid Level
+            </option>
+
+            <option>
+              Senior Level
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Location
+          </label>
+
+          <input
+            id="location"
+            placeholder="e.g. Islamabad, Pakistan"
+            autocomplete="address-level2">
+
+        </div>
+
+      </div>
+
+
+
+      <h2 style="margin-top:24px;margin-bottom:14px">
+        Contact Information
+      </h2>
+
+
+      <div class="row">
+
+        <div class="field">
+
+          <label>
+            Phone Number
+          </label>
+
+          <input
+            id="phone"
+            type="tel"
+            placeholder="e.g. +92 300 1234567"
+            autocomplete="tel">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Email Address
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            placeholder="e.g. dua@example.com"
+            autocomplete="email">
+
+        </div>
+
+      </div>
+
+
+
+      <div class="row">
+
+        <div class="field">
+
+          <label>
+            LinkedIn Profile
+          </label>
+
+          <input
+            id="linkedin"
+            type="url"
+            placeholder="https://linkedin.com/in/yourname">
+
+        </div>
+
+
+        <div class="field">
+
+          <label>
+            Portfolio / Website
+          </label>
+
+          <input
+            id="portfolio"
+            type="url"
+            placeholder="https://yourwebsite.com">
+
+        </div>
+
+      </div>
+
+
+
+      <h2 style="margin-top:24px;margin-bottom:14px">
+        Professional Information
+      </h2>
+
+
+      <div class="field">
+
+        <label>
+          Your Skills
+        </label>
+
+        <input
+          id="skills"
+          placeholder="Separate skills with commas">
+
+      </div>
+
+
+
+      <!-- EDUCATION -->
+      <div class="field">
+
+        <label>Education</label>
+
+        <div id="educationList" class="repeat-list">
+          <div class="repeat-item education-item">
+            <div class="field">
+              <label>Degree / Program</label>
+              <input
+                class="education-degree"
+                placeholder="e.g. BS Cybersecurity">
+            </div>
+
+            <div class="field">
+              <label>University / Institute</label>
+              <input
+                class="education-school"
+                placeholder="e.g. University Name">
+            </div>
+
+            <div class="field">
+              <label>Year / Dates</label>
+              <input
+                class="education-year"
+                placeholder="e.g. 2022 - 2026">
+            </div>
+
+            <div class="repeat-actions">
+              <button type="button" class="add-entry" onclick="addEducation()">+ Add Education</button>
+              <button type="button" class="remove-entry" onclick="removeEducation(this)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+      <!-- CERTIFICATIONS -->
+      <div class="field">
+
+        <label>Certifications</label>
+
+        <div id="certificationList" class="repeat-list">
+          <div class="repeat-item certification-item">
+            <div class="field">
+              <label>Certificate Name</label>
+              <input
+                class="certification-name"
+                placeholder="e.g. CompTIA Security+">
+            </div>
+
+            <div class="field">
+              <label>Issuer / Year (optional)</label>
+              <input
+                class="certification-meta"
+                placeholder="e.g. CompTIA | 2026">
+            </div>
+
+            <div class="repeat-actions">
+              <button type="button" class="add-entry" onclick="addCertification()">+ Add Certification</button>
+              <button type="button" class="remove-entry" onclick="removeCertification(this)">Remove</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+
+      <div class="field">
+
+        <label>
+          Experience
+        </label>
+
+        <textarea
+          id="experience"
+          placeholder="Roles, internships, freelance work, responsibilities..."></textarea>
+
+      </div>
+
+
+
+      <div class="field">
+
+        <label>
+          Projects
+        </label>
+
+        <textarea
+          id="projects"
+          placeholder="Cybersecurity labs, GitHub projects, home labs..."></textarea>
+
+      </div>
+
+
+
+      <div class="field">
+
+        <label>
+          Job Description
+        </label>
+
+        <textarea
+          id="jd"
+          placeholder="Paste the job description here..."></textarea>
+
+      </div>
+
+
+
+      <button
+        class="primary"
+        onclick="generate()">
+
+        ✦ Generate My Application
+
+      </button>
+
+
+      <div
+        class="hint"
+        id="status">
+
+        AI mode: OpenRouter connected through the secure server. Your API key stays server-side.
+
+      </div>
+
+    </section>
+
+
+
+    <!-- JOB MATCH -->
+
+    <section
+      class="card"
+      id="jobmatch">
+
+      <h2>
+        Job Match
+      </h2>
+
+
+      <div class="score">
+
+        <div
+          class="circle"
+          id="score">
+
+          87%
+
+        </div>
+
+
+        <div>
+
+          <div
+            id="scoreLabel"
+            style="font-size:18px;font-weight:700">
+
+            Strong Match
+
+          </div>
+
+
+          <div
+            id="scoreDesc"
+            style="color:#8f9bb4;margin-top:5px">
+
+            Generate an application to analyze the role.
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="checks"
+        id="checks">
+
+        <div class="check">
+          ✓ <b>Networking</b> matched
+        </div>
+
+        <div class="check">
+          ✓ <b>Linux</b> matched
+        </div>
+
+        <div class="check">
+          ✓ <b>SIEM</b> matched
+        </div>
+
+        <div class="check">
+          ✓ <b>Cloud/AWS</b> matched
+        </div>
+
+        <div class="check">
+          ⚠ Add more role-specific keywords
+        </div>
+
+      </div>
+
+
+      <hr
+        style="border:0;border-top:1px solid #263452;margin:22px 0">
+
+
+      <h2>
+        AI Suggestions
+      </h2>
+
+
+      <div id="suggestions">
+
+        <div class="check">
+          • Generate your application to receive personalized suggestions.
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+
+  <!-- ======================================================
+       OUTPUT
+  ======================================================= -->
+
+  <section
+    class="card output"
+    id="output">
+
+
+    <span id="resumes"></span>
+
+
+    <h2>
+      Your Generated Application
+    </h2>
+
+
+
+    <!-- TEMPLATE SELECTOR -->
+
+    <div class="template-panel">
+
+      <h2>
+        Choose Your CV Template
+      </h2>
+
+
+      <div class="template-grid">
+
+
+        <div
+          class="template-card active"
+          data-template="classic"
+          onclick="selectTemplate('classic',this)">
+
+          <div class="template-preview">
+
+            <div class="title"></div>
+
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+
+          </div>
+
+          <strong>
+            Classic ATS
+          </strong>
+
+          <span>
+            Traditional ATS-friendly resume
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="modern"
+          onclick="selectTemplate('modern',this)">
+
+          <div class="template-preview">
+
+            <div
+              class="title"
+              style="background:#2563eb">
+            </div>
+
+            <div class="line"></div>
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="width:70%">
+            </div>
+
+            <div class="line"></div>
+
+          </div>
+
+          <strong>
+            Modern Professional
+          </strong>
+
+          <span>
+            Clean modern corporate layout
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="cyber"
+          onclick="selectTemplate('cyber',this)">
+
+          <div class="template-preview">
+
+            <div
+              class="title"
+              style="background:#16a34a">
+            </div>
+
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="background:#86efac">
+            </div>
+
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="background:#86efac">
+            </div>
+
+          </div>
+
+          <strong>
+            Cybersecurity
+          </strong>
+
+          <span>
+            Tech-focused security design
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="executive"
+          onclick="selectTemplate('executive',this)">
+
+          <div class="template-preview">
+
+            <div class="title"></div>
+
+            <div class="line"></div>
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="width:80%">
+            </div>
+
+            <div class="line"></div>
+
+          </div>
+
+          <strong>
+            Executive
+          </strong>
+
+          <span>
+            Premium leadership style
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="minimal"
+          onclick="selectTemplate('minimal',this)">
+
+          <div class="template-preview">
+
+            <div
+              class="title"
+              style="width:45%">
+            </div>
+
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="width:80%">
+            </div>
+
+            <div class="line"></div>
+
+            <div
+              class="line"
+              style="width:65%">
+            </div>
+
+          </div>
+
+          <strong>
+            Minimal
+          </strong>
+
+          <span>
+            Simple one-page resume
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="creative"
+          onclick="selectTemplate('creative',this)">
+
+          <div
+            class="template-preview"
+            style="background:#111827">
+
+            <div
+              style="
+                width:65%;
+                height:10px;
+                background:#fff;
+                border-radius:3px;
+                margin-bottom:9px">
+            </div>
+
+            <div
+              style="
+                width:35%;
+                height:5px;
+                background:#34d399;
+                border-radius:3px;
+                margin-bottom:13px">
+            </div>
+
+            <div
+              class="line"
+              style="background:#475569">
+            </div>
+
+            <div
+              class="line"
+              style="background:#475569">
+            </div>
+
+            <div
+              style="
+                width:45%;
+                height:10px;
+                background:#34d399;
+                border-radius:10px;
+                margin-top:9px">
+            </div>
+
+          </div>
+
+          <strong>
+            Creative Portfolio
+          </strong>
+
+          <span>
+            Bold and visually creative
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="timeline"
+          onclick="selectTemplate('timeline',this)">
+
+          <div class="template-preview">
+
+            <div
+              style="
+                width:60%;
+                height:9px;
+                background:#172033;
+                border-radius:3px;
+                margin-bottom:12px">
+            </div>
+
+            <div
+              style="
+                width:3px;
+                height:65px;
+                background:#bfdbfe;
+                margin-left:8px;
+                position:relative">
+
+              <div
+                style="
+                  width:8px;
+                  height:8px;
+                  background:#2563eb;
+                  border-radius:50%;
+                  position:absolute;
+                  left:-3px;
+                  top:5px">
+              </div>
+
+              <div
+                style="
+                  width:8px;
+                  height:8px;
+                  background:#2563eb;
+                  border-radius:50%;
+                  position:absolute;
+                  left:-3px;
+                  top:30px">
+              </div>
+
+              <div
+                style="
+                  width:8px;
+                  height:8px;
+                  background:#2563eb;
+                  border-radius:50%;
+                  position:absolute;
+                  left:-3px;
+                  top:55px">
+              </div>
+
+            </div>
+
+          </div>
+
+          <strong>
+            Timeline Pro
+          </strong>
+
+          <span>
+            Experience-focused timeline
+          </span>
+
+        </div>
+
+
+
+        <div
+          class="template-card"
+          data-template="sidebar"
+          onclick="selectTemplate('sidebar',this)">
+
+          <div class="template-preview" style="display:grid;grid-template-columns:28% 72%;gap:5px;background:#fff;padding:7px;">
+            <div style="background:#f3f4f6;border-right:1px solid #d1d5db;padding:5px;">
+              <div style="height:7px;width:70%;background:#111827;margin-bottom:7px;border-radius:2px;"></div>
+              <div class="line" style="width:90%;"></div>
+              <div class="line" style="width:80%;"></div>
+              <div class="line" style="width:85%;"></div>
+            </div>
+            <div style="padding:5px;">
+              <div style="height:8px;width:80%;background:#111827;margin-bottom:8px;border-radius:2px;"></div>
+              <div class="line"></div>
+              <div class="line" style="width:90%;"></div>
+              <div class="line" style="width:75%;"></div>
+              <div class="line" style="width:85%;"></div>
+            </div>
+          </div>
+
+          <strong>Sidebar</strong>
+          <span>Professional two-column CV layout</span>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ACTIONS -->
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="copyText()">
+        Copy Resume
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="downloadText()">
+        Download TXT
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="printCV()">
+        Print / Save PDF
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="showCover()">
+        View Cover Letter
+      </button>
+
+
+      <button
+        class="secondary"
+        onclick="downloadCover()">
+        Download Cover Letter
+      </button>
+
+    </div>
+
+
+
+    <!-- ====================================================
+         CV PAPER
+         Supports all 8 templates, including Sidebar.
+    ===================================================== -->
+
+    <div
+      id="cvPaper"
+      class="cv-paper template-classic"
+      style="display:none;">
+
+      <div class="cv-header">
+        <div class="cv-name" id="cvName"></div>
+        <div class="cv-job-title" id="cvJobTitle"></div>
+        <div class="cv-contact" id="cvContact"></div>
+      </div>
+
+      <aside class="cv-sidebar">
+        <div class="cv-section" id="contactSection">
+          <h3>CONTACT</h3>
+          <div class="cv-contact-info" id="cvSidebarContact"></div>
+        </div>
+
+        <div class="cv-section" id="sidebarEducationSection">
+          <h3>EDUCATION</h3>
+          <div id="cvEducation"></div>
+        </div>
+
+        <div class="cv-section" id="sidebarSkillsSection">
+          <h3>SKILLS</h3>
+          <div class="cv-skills" id="cvSkills"></div>
+        </div>
+      </aside>
+
+      <main class="cv-main">
+        <div class="cv-section" id="summarySection">
+          <h3>PROFILE SUMMARY</h3>
+          <p id="cvSummary"></p>
+        </div>
+
+        <div class="cv-section" id="normalEducationSection">
+          <h3>EDUCATION</h3>
+          <div id="cvEducationNormal"></div>
+        </div>
+
+        <div class="cv-section" id="experienceSection">
+          <h3>WORK EXPERIENCE</h3>
+          <ul id="cvExperience"></ul>
+        </div>
+
+        <div class="cv-section" id="normalSkillsSection">
+          <h3>SKILLS</h3>
+          <div class="cv-skills" id="cvSkillsNormal"></div>
+        </div>
+
+        <div class="cv-section" id="projectsSection">
+          <h3>PROJECTS</h3>
+          <ul id="cvProjects"></ul>
+        </div>
+
+        <div class="cv-section" id="certsSection">
+          <h3>CERTIFICATIONS</h3>
+          <div id="cvCerts"></div>
+        </div>
+      </main>
+    </div>
+
+    <!-- HIDDEN AI TEXT -->
+
+    <pre
+      id="resume"
+      style="display:none">
+    </pre>
+
+
+
+    <!-- COVER LETTER -->
+
+    <div
+      id="cover"
+      class="hidden">
+
+      <span id="coverletters"></span>
+
+      <h2 style="margin-top:22px">
+        Tailored Cover Letter
+      </h2>
+
+      <pre id="coverText"></pre>
+
+    </div>
+
+
+  </section>
+
+
+
+  <!-- ANALYTICS -->
+
+  <section
+    class="card"
+    id="analytics"
+    style="margin-top:22px">
+
+    <h2>
+      Analytics
+    </h2>
+
+    <p style="color:#aeb9d3">
+      Your generation analytics will appear here as you create applications.
+    </p>
+
+
+    <div class="row">
+
+      <div class="check">
+
+        <b>
+          Applications generated
+        </b>
+
+        <br>
+
+        <span id="generatedCount">
+          0
+        </span>
+
+      </div>
+
+
+      <div class="check">
+
+        <b>
+          Current mode
+        </b>
+
+        <br>
+
+        OpenRouter AI
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- SETTINGS -->
+
+  <section
+    class="card"
+    id="settings"
+    style="margin-top:22px">
+
+    <h2>
+      Settings
+    </h2>
+
+    <p style="color:#aeb9d3">
+      CyberCare AI is configured to use OpenRouter securely through your server.
+    </p>
+
+    <div class="check">
+      🔒 API key stays server-side in <code>.env</code>.
+    </div>
+
+  </section>
+
+
+</main>
+
+</div>
+
+
+
+<script>
+
+/* =========================================================
+   GLOBAL VARIABLES
+========================================================= */
+
+let resumeText = '';
+
+let selectedTemplate = 'classic';
+
+let coverText = '';
+
+const $ = id =>
+  document.getElementById(id);
+
+
+
+/* =========================================================
+   TEMPLATE SELECTION
+========================================================= */
+
+function selectTemplate(template, card){
+
+  selectedTemplate = template;
+
+
+  document
+    .querySelectorAll('.template-card')
+    .forEach(
+      c => c.classList.remove('active')
+    );
+
+
+  if(card){
+    card.classList.add('active');
+  }
+
+
+  const paper =
+    $('cvPaper');
+
+
+  paper.classList.remove(
+    'template-classic',
+    'template-modern',
+    'template-cyber',
+    'template-executive',
+    'template-minimal',
+    'template-creative',
+    'template-timeline',
+    'template-sidebar'
+  );
+
+
+  paper.classList.add(
+    'template-' + template
+  );
+
+
+  const names = {
+
+    classic:'Classic ATS',
+
+    modern:'Modern Professional',
+
+    cyber:'Cybersecurity',
+
+    executive:'Executive',
+
+    minimal:'Minimal',
+
+    creative:'Creative Portfolio',
+
+    timeline:'Timeline Pro',
+
+    sidebar:'Sidebar'
+
+  };
+
+
+  setStatus(
+    names[template] +
+    ' template selected.',
+    true
+  );
+
+}
+
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(msg, good=false){
+
+  $('status').innerHTML = msg;
+
+  $('status').style.color =
+    good
+      ? '#6ee7b7'
+      : '#8290ad';
+
+}
+
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function navigate(target, btn){
+
+  document
+    .querySelectorAll('.nav button')
+    .forEach(
+      b => b.classList.remove('active')
+    );
+
+
+  if(btn){
+    btn.classList.add('active');
+  }
+
+
+  if(target === 'resumes'){
+
+    const out =
+      $('output');
+
+
+    if(!resumeText){
+
+      setStatus(
+        'Generate an application first to view your resume.',
+        false
+      );
+
+      out.style.display =
+        'block';
+
+    }
+
+
+    out.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+    return;
+
+  }
+
+
+
+  if(target === 'coverletters'){
+
+    const out =
+      $('output');
+
+
+    out.style.display =
+      'block';
+
+
+    $('cover')
+      .classList
+      .remove('hidden');
+
+
+    if(!coverText){
+
+      $('coverText').textContent =
+        'No cover letter generated yet. Generate an application first.';
+
+    }
+
+
+    out.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+    return;
+
+  }
+
+
+
+  const el =
+    document.getElementById(target);
+
+
+  if(el){
+
+    el.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+  }
+
+}
+
+
+
+/* =========================================================
+   GENERATE
+========================================================= */
+
+async function generate(){
+
+  const payload = {
+
+    name:
+      $('name').value.trim(),
+
+    job:
+      $('job').value.trim(),
+
+    level:
+      $('level').value,
+
+    location:
+      $('location').value.trim(),
+
+    phone:
+      $('phone').value.trim(),
+
+    email:
+      $('email').value.trim(),
+
+    linkedin:
+      $('linkedin').value.trim(),
+
+    portfolio:
+      $('portfolio').value.trim(),
+
+    skills:
+      $('skills').value.trim(),
+
+    education:
+      collectEducation().join('\n'),
+
+    certs:
+      collectCertifications().join('\n'),
+
+    experience:
+      $('experience').value.trim(),
+
+    projects:
+      $('projects').value.trim(),
+
+    jd:
+      $('jd').value.trim()
+
+  };
+
+
+  if(
+    !payload.name ||
+    !payload.job ||
+    !payload.skills ||
+    !payload.jd
+  ){
+
+    setStatus(
+      'Please add your name, job title, skills, and job description.'
+    );
+
+    return;
+
+  }
+
+
+  const btn =
+    document.querySelector('.primary');
+
+
+  btn.disabled =
+    true;
+
+
+  btn.textContent =
+    '✦ Generating with AI…';
+
+
+  setStatus(
+    'Building your tailored resume, cover letter, keywords and match analysis…'
+  );
+
+
+  try{
+
+    const r =
+      await fetch(
+        '/api/generate',
+        {
+          method:'POST',
+
+          headers:{
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+
+    const data =
+      await r.json();
+
+
+    if(!r.ok){
+
+      throw new Error(
+        data.error ||
+        'Generation failed'
+      );
+
+    }
+
+
+    /* STORE GENERATED CONTENT */
+
+    resumeText =
+      data.resume ||
+      '';
+
+    coverText =
+      data.cover_letter ||
+      '';
+
+
+    $('resume').textContent =
+      resumeText;
+
+
+    $('coverText').textContent =
+      coverText;
+
+
+    /* RENDER CV */
+
+    renderCV(
+      data,
+      payload
+    );
+
+
+    /* SCORE */
+
+    const score =
+      Number(data.match_score) || 0;
+
+
+    $('score').textContent =
+      score + '%';
+
+
+    const label =
+      score >= 80
+        ? 'Strong Match'
+        : score >= 65
+          ? 'Good Match'
+          : 'Needs Improvement';
+
+
+    $('scoreLabel').textContent =
+      label;
+
+
+    $('scoreDesc').textContent =
+      `Matched ${
+        data.matched_keywords?.length || 0
+      } important keywords from the job description.`;
+
+
+
+    /* KEYWORDS */
+
+    const checks = [
+
+      ...(data.matched_keywords || [])
+        .slice(0,6)
+        .map(
+          x =>
+            `✓ <b>${escapeHtml(x)}</b> matched`
+        ),
+
+      ...(data.missing_keywords || [])
+        .slice(0,3)
+        .map(
+          x =>
+            `⚠ <b>${escapeHtml(x)}</b> missing`
+        )
+
+    ];
+
+
+    $('checks').innerHTML =
+      checks.length
+
+        ? checks
+            .map(
+              x =>
+                `<div class="check">
+                  ${x}
+                </div>`
+            )
+            .join('')
+
+        : `<div class="check">
+            No keyword analysis returned.
+          </div>`;
+
+
+
+    /* SUGGESTIONS */
+
+    const suggestions =
+      Array.isArray(data.suggestions)
+        ? data.suggestions
+        : [];
+
+
+    $('suggestions').innerHTML =
+      suggestions.length
+
+        ? suggestions
+            .slice(0,5)
+            .map(
+              x =>
+                `<div class="check">
+                  • ${escapeHtml(x)}
+                </div>`
+            )
+            .join('')
+
+        : `<div class="check">
+            No suggestions returned.
+          </div>`;
+
+
+
+    /* SHOW OUTPUT */
+
+    $('output').style.display =
+      'block';
+
+
+    $('cover')
+      .classList
+      .add('hidden');
+
+
+
+    /* ANALYTICS */
+
+    const currentCount =
+      Number(
+        $('generatedCount').textContent
+      ) || 0;
+
+
+    $('generatedCount').textContent =
+      String(currentCount + 1);
+
+
+
+    setStatus(
+      'Live AI generation complete.',
+      true
+    );
+
+
+    $('output').scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+
+  }catch(e){
+
+    setStatus(
+      '⚠ ' +
+      escapeHtml(
+        e.message ||
+        'Something went wrong.'
+      )
+    );
+
+
+    alert(
+      e.message ||
+      'Generation failed.'
+    );
+
+  }finally{
+
+    btn.disabled =
+      false;
+
+
+    btn.textContent =
+      '✦ Generate My Application';
+
+  }
+
+}
+
+
+
+/* =========================================================
+   HELPER
+   Convert manually entered experience/projects
+   into clean CV bullets when AI bullets are unavailable.
+========================================================= */
+
+function textToBullets(text){
+
+  return String(text || '')
+    .split(/\n|•|;/)
+    .map(x => x.trim())
+    .filter(Boolean)
+    .map(x => x.replace(/^[-*]\s*/, '').trim())
+    .filter(Boolean);
+
+}
+
+
+
+/* =========================================================
+   MULTIPLE EDUCATION / CERTIFICATION HELPERS
+========================================================= */
+
+function addEducation(){
+  const list = $('educationList');
+  const item = document.createElement('div');
+  item.className = 'repeat-item education-item';
+  item.innerHTML = `
+    <div class="field">
+      <label>Degree / Program</label>
+      <input class="education-degree" placeholder="e.g. MS Cybersecurity">
+    </div>
+
+    <div class="field">
+      <label>University / Institute</label>
+      <input class="education-school" placeholder="e.g. University Name">
+    </div>
+
+    <div class="field">
+      <label>Year / Dates</label>
+      <input class="education-year" placeholder="e.g. 2026 - 2028">
+    </div>
+
+    <div class="repeat-actions">
+      <button type="button" class="add-entry" onclick="addEducation()">+ Add Education</button>
+      <button type="button" class="remove-entry" onclick="removeEducation(this)">Remove</button>
+    </div>
+  `;
+  list.appendChild(item);
+}
+
+function removeEducation(button){
+  const items = document.querySelectorAll('.education-item');
+  if(items.length <= 1){
+    items[0].querySelector('.education-degree').value = '';
+    items[0].querySelector('.education-school').value = '';
+    items[0].querySelector('.education-year').value = '';
+    return;
+  }
+  button.closest('.education-item').remove();
+}
+
+function collectEducation(){
+  return Array.from(document.querySelectorAll('.education-item'))
+    .map(item => {
+      const degree = item.querySelector('.education-degree')?.value.trim() || '';
+      const school = item.querySelector('.education-school')?.value.trim() || '';
+      const year = item.querySelector('.education-year')?.value.trim() || '';
+      return [degree, school, year].filter(Boolean).join(' | ');
+    })
+    .filter(Boolean);
+}
+
+function addCertification(){
+  const list = $('certificationList');
+  const item = document.createElement('div');
+  item.className = 'repeat-item certification-item';
+  item.innerHTML = `
+    <div class="field">
+      <label>Certificate Name</label>
+      <input class="certification-name" placeholder="e.g. Google Cybersecurity Certificate">
+    </div>
+
+    <div class="field">
+      <label>Issuer / Year (optional)</label>
+      <input class="certification-meta" placeholder="e.g. Google | 2026">
+    </div>
+
+    <div class="repeat-actions">
+      <button type="button" class="add-entry" onclick="addCertification()">+ Add Certification</button>
+      <button type="button" class="remove-entry" onclick="removeCertification(this)">Remove</button>
+    </div>
+  `;
+  list.appendChild(item);
+}
+
+function removeCertification(button){
+  const items = document.querySelectorAll('.certification-item');
+  if(items.length <= 1){
+    items[0].querySelector('.certification-name').value = '';
+    items[0].querySelector('.certification-meta').value = '';
+    return;
+  }
+  button.closest('.certification-item').remove();
+}
+
+function collectCertifications(){
+  return Array.from(document.querySelectorAll('.certification-item'))
+    .map(item => {
+      const name = item.querySelector('.certification-name')?.value.trim() || '';
+      const meta = item.querySelector('.certification-meta')?.value.trim() || '';
+      return [name, meta].filter(Boolean).join(' | ');
+    })
+    .filter(Boolean);
+}
+
+/* =========================================================
+   RENDER CV
+========================================================= */
+
+function renderCV(data, payload){
+
+  const paper =
+    $('cvPaper');
+
+
+  /* SHOW CV */
+
+  paper.style.display =
+    'block';
+
+
+
+  /* =======================================================
+     NAME
+  ======================================================= */
+
+  const name =
+    String(
+      payload.name || ''
+    ).trim();
+
+
+  $('cvName').textContent =
+    name
+      ? name.toUpperCase()
+      : '';
+
+  $('cvJobTitle').textContent =
+    String(payload.job || '').trim();
+
+
+
+  /* =======================================================
+     CONTACT
+  ======================================================= */
+
+  const contactParts =
+    [];
+
+
+  if(payload.location){
+
+    contactParts.push(
+      escapeHtml(
+        payload.location
+      )
+    );
+
+  }
+
+
+  if(payload.phone){
+
+    contactParts.push(
+      escapeHtml(
+        payload.phone
+      )
+    );
+
+  }
+
+
+  if(payload.email){
+
+    contactParts.push(
+      `<a href="mailto:${escapeHtml(payload.email)}">
+        ${escapeHtml(payload.email)}
+      </a>`
+    );
+
+  }
+
+
+  if(payload.linkedin){
+
+    contactParts.push(
+      `<a
+        href="${safeUrl(payload.linkedin)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        LinkedIn
+      </a>`
+    );
+
+  }
+
+
+  if(payload.portfolio){
+
+    contactParts.push(
+      `<a
+        href="${safeUrl(payload.portfolio)}"
+        target="_blank"
+        rel="noopener noreferrer">
+        Portfolio
+      </a>`
+    );
+
+  }
+
+
+  $('cvContact').innerHTML =
+    contactParts.join(
+      ' &nbsp;•&nbsp; '
+    );
+
+  const sidebarContactParts = [];
+
+  if(payload.phone){
+    sidebarContactParts.push(escapeHtml(payload.phone));
+  }
+
+  if(payload.email){
+    sidebarContactParts.push(
+      `<a href="mailto:${escapeHtml(payload.email)}">${escapeHtml(payload.email)}</a>`
+    );
+  }
+
+  if(payload.linkedin){
+    sidebarContactParts.push(
+      `<a href="${safeUrl(payload.linkedin)}" target="_blank" rel="noopener noreferrer">LinkedIn</a>`
+    );
+  }
+
+  if(payload.portfolio){
+    sidebarContactParts.push(
+      `<a href="${safeUrl(payload.portfolio)}" target="_blank" rel="noopener noreferrer">Portfolio</a>`
+    );
+  }
+
+  $('cvSidebarContact').innerHTML =
+    sidebarContactParts.length
+      ? sidebarContactParts.join('<br>')
+      : 'Not provided';
+
+  $('contactSection').style.display =
+    sidebarContactParts.length ? '' : 'none';
+
+
+
+  /* =======================================================
+     1. PROFESSIONAL SUMMARY
+  ======================================================= */
+
+  const summary =
+    String(
+      data.summary || ''
+    ).trim();
+
+
+  $('cvSummary').textContent =
+    summary;
+
+
+  $('summarySection').style.display =
+    summary
+      ? ''
+      : 'none';
+
+
+
+  /* =======================================================
+     2. EDUCATION
+  ======================================================= */
+
+  const education = collectEducation();
+
+  const educationHtml = education
+    .map(x => `<div class="cv-entry">${escapeHtml(x)}</div>`)
+    .join('');
+
+  $('cvEducation').innerHTML = educationHtml;
+  $('cvEducationNormal').innerHTML = educationHtml;
+
+  $('sidebarEducationSection').style.display =
+    education.length ? '' : 'none';
+
+  $('normalEducationSection').style.display =
+    education.length ? '' : 'none';
+
+
+
+  /* =======================================================
+     3. EXPERIENCE
+
+     AI bullets are preferred.
+     If AI gives nothing, manual experience is shown.
+  ======================================================= */
+
+  let experience = [];
+
+
+  if(
+    Array.isArray(
+      data.experience_bullets
+    )
+  ){
+
+    experience =
+      data.experience_bullets
+        .map(
+          x =>
+            String(x).trim()
+        )
+        .filter(Boolean);
+
+  }
+
+
+  if(!experience.length){
+
+    experience =
+      textToBullets(
+        payload.experience
+      );
+
+  }
+
+
+  $('cvExperience').innerHTML =
+    experience
+      .map(
+        x =>
+          `<li>
+            ${escapeHtml(x)}
+          </li>`
+      )
+      .join('');
+
+
+  $('experienceSection').style.display =
+    experience.length
+      ? ''
+      : 'none';
+
+
+
+  /* =======================================================
+     4. TECHNICAL SKILLS
+  ======================================================= */
+
+  let skills =
+    [];
+
+
+  if(
+    Array.isArray(data.skills) &&
+    data.skills.length
+  ){
+
+    skills =
+      data.skills;
+
+  }else{
+
+    skills =
+      String(
+        payload.skills || ''
+      ).split(',');
+
+  }
+
+
+  skills =
+    skills
+      .map(
+        x =>
+          String(x).trim()
+      )
+      .filter(Boolean);
+
+
+  const skillsHtml = skills
+    .map(
+      x =>
+        `<span class="cv-skill">
+          ${escapeHtml(x)}
+        </span>`
+    )
+    .join('');
+
+  $('cvSkills').innerHTML = skillsHtml;
+  $('cvSkillsNormal').innerHTML = skillsHtml;
+
+  $('sidebarSkillsSection').style.display =
+    skills.length ? '' : 'none';
+
+  $('normalSkillsSection').style.display =
+    skills.length ? '' : 'none';
+
+
+
+  /* =======================================================
+     5. PROJECTS
+
+     AI bullets are preferred.
+     If AI gives nothing, manual projects are shown.
+  ======================================================= */
+
+  let projects = [];
+
+
+  if(
+    Array.isArray(
+      data.project_bullets
+    )
+  ){
+
+    projects =
+      data.project_bullets
+        .map(
+          x =>
+            String(x).trim()
+        )
+        .filter(Boolean);
+
+  }
+
+
+  if(!projects.length){
+
+    projects =
+      textToBullets(
+        payload.projects
+      );
+
+  }
+
+
+  $('cvProjects').innerHTML =
+    projects
+      .map(
+        x =>
+          `<li>
+            ${escapeHtml(x)}
+          </li>`
+      )
+      .join('');
+
+
+  $('projectsSection').style.display =
+    projects.length
+      ? ''
+      : 'none';
+
+
+
+  /* =======================================================
+     6. CERTIFICATIONS
+  ======================================================= */
+
+  const certs = collectCertifications();
+
+  $('cvCerts').innerHTML = certs
+    .map(x => `<div class="cv-entry">${escapeHtml(x)}</div>`)
+    .join('');
+
+  $('certsSection').style.display =
+    certs.length
+      ? ''
+      : 'none';
+
+
+
+  /* =======================================================
+     APPLY TEMPLATE
+  ======================================================= */
+
+  paper.classList.remove(
+
+    'template-classic',
+
+    'template-modern',
+
+    'template-cyber',
+
+    'template-executive',
+
+    'template-minimal',
+
+    'template-creative',
+
+    'template-timeline',
+
+    'template-sidebar'
+
+  );
+
+
+  paper.classList.add(
+    'template-' +
+    selectedTemplate
+  );
+
+  /* Show only the correct columns for the selected template. */
+  const isSidebar = selectedTemplate === 'sidebar';
+
+  $('cvSidebarContact').closest('.cv-section').style.display =
+    isSidebar && sidebarContactParts.length ? '' : 'none';
+
+  $('sidebarEducationSection').style.display =
+    isSidebar && education.length ? '' : 'none';
+
+  $('sidebarSkillsSection').style.display =
+    isSidebar && skills.length ? '' : 'none';
+
+  $('normalEducationSection').style.display =
+    !isSidebar && education.length ? '' : 'none';
+
+  $('normalSkillsSection').style.display =
+    !isSidebar && skills.length ? '' : 'none';
+
+}
+
+
+
+/* =========================================================
+   SAFE URL
+========================================================= */
+
+function safeUrl(url){
+
+  const value =
+    String(
+      url || ''
+    ).trim();
+
+
+  if(
+    /^https?:\/\//i.test(value)
+  ){
+
+    return escapeHtml(
+      value
+    );
+
+  }
+
+
+  return '#';
+
+}
+
+
+
+/* =========================================================
+   HTML ESCAPE
+========================================================= */
+
+function escapeHtml(x){
+
+  return String(
+    x ?? ''
+  ).replace(
+    /[&<>'"]/g,
+    c =>
+      ({
+        '&':'&amp;',
+        '<':'&lt;',
+        '>':'&gt;',
+        "'":'&#39;',
+        '"':'&quot;'
+      }[c])
+  );
+
+}
+
+
+
+/* =========================================================
+   PRINT / PDF
+========================================================= */
+
+function printCV(){
+
+  if(!resumeText){
+
+    alert(
+      'Please generate your resume first.'
+    );
+
+    return;
+
+  }
+
+
+  window.print();
+
+}
+
+
+
+/* =========================================================
+   COVER LETTER
+========================================================= */
+
+function showCover(){
+
+  if(!coverText){
+
+    alert(
+      'Please generate your application first.'
+    );
+
+    return;
+
+  }
+
+
+  $('cover')
+    .classList
+    .remove('hidden');
+
+
+  $('coverText').textContent =
+    coverText;
+
+
+  $('cover')
+    .scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+
+}
+
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+async function copyText(){
+
+  if(!resumeText){
+
+    alert(
+      'Please generate your resume first.'
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    await navigator.clipboard.writeText(
+      resumeText
+    );
+
+
+    setStatus(
+      'Resume copied to clipboard.',
+      true
+    );
+
+
+  }catch(e){
+
+    alert(
+      'Could not copy the resume.'
+    );
+
+  }
+
+}
+
+
+
+/* =========================================================
+   DOWNLOAD TXT
+========================================================= */
+
+function downloadText(){
+
+  if(!resumeText){
+
+    alert(
+      'Please generate your resume first.'
+    );
+
+    return;
+
+  }
+
+
+  const blob =
+    new Blob(
+      [resumeText],
+      {
+        type:'text/plain'
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a =
+    document.createElement(
+      'a'
+    );
+
+
+  a.href =
+    url;
+
+
+  a.download =
+    'cybercare-resume.txt';
+
+
+  document.body.appendChild(
+    a
+  );
+
+
+  a.click();
+
+
+  a.remove();
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+}
+
+
+
+/* =========================================================
+   DOWNLOAD COVER
+========================================================= */
+
+function downloadCover(){
+
+  if(!coverText){
+
+    alert(
+      'Please generate your application first.'
+    );
+
+    return;
+
+  }
+
+
+  const blob =
+    new Blob(
+      [coverText],
+      {
+        type:'text/plain'
+      }
+    );
+
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const a =
+    document.createElement(
+      'a'
+    );
+
+
+  a.href =
+    url;
+
+
+  a.download =
+    'cybercare-cover-letter.txt';
+
+
+  document.body.appendChild(
+    a
+  );
+
+
+  a.click();
+
+
+  a.remove();
+
+
+  URL.revokeObjectURL(
+    url
+  );
+
+}
+
+
+
+/* =========================================================
+   SERVER HEALTH
+========================================================= */
+
+fetch('/api/health')
+
+  .then(
+    r =>
+      r.json()
+  )
+
+  .then(
+    x => {
+
+      if(x.aiConnected){
+
+        setStatus(
+          'AI is connected and ready.',
+          true
+        );
+
+      }
+
+    }
+  )
+
+  .catch(
+    () => {}
+  );
+
+</script>
+
+</body>
+</html>
